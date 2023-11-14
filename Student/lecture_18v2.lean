@@ -173,7 +173,10 @@ of a string of being of an even-length.
 -/
 
 -- Here
+def ev_len_str : String → Prop
+| str => str.length % 2 = 0
 
+#reduce ev_len_str "WOHOOOO!"
 
 
 /-
@@ -183,7 +186,7 @@ even length strings.
 
 -- Here
 
-
+#check {s : String | ev_len_str s}
 
 /-
 (3) Define a predicate, str_eq_len, applicable to any
@@ -192,7 +195,8 @@ just in those cases where s.length equals n.
 -/
 
 -- Here
-
+def str_eq_len : String → Nat → Prop
+| s, n => s.length = n
 
 
 /-
@@ -202,7 +206,7 @@ of all ordered pairs, p = ⟨ s, n ⟩, such that n = s.length.
 
 -- Here
 
-
+def str_eq_lens : Set (String × Nat) := {s | str_eq_len s.1 s.2}
 
 /-
 (5) Use "example" in Lean to state and prove the proposition
@@ -211,7 +215,8 @@ that ⟨ "I love Logic!", 13 ⟩ ∈ str_eq_lens.
 
 -- Here
 
-
+example : ⟨ "I love Logic!", 13 ⟩ ∈ str_eq_lens := rfl
+#reduce str_eq_len "I love Logic!" 13
 
 
 /-
@@ -222,3 +227,6 @@ know what that means.
 -/
 
 -- Here
+
+example : ⟨ "I love Logic!", 1 ⟩ ∉ str_eq_lens :=
+fun (t : ⟨ "I love Logic!", 1 ⟩ ∈ str_eq_lens) => nomatch t
