@@ -17,6 +17,7 @@ for this set.
 -/
 
 -- Here
+def odds : Set Nat := { n | n % 2 ≠ 0 }
 
 /-!
 ## Problem #2:
@@ -29,6 +30,7 @@ of another number, namely m = 6.
 -/
 
 -- Here
+def perfect_squares : Set Nat := { n | ∃ m, n = m * m }
 
 /-!
 ## Problem #3:
@@ -38,6 +40,7 @@ to be the intersection of the odds and the perfect squares.
 -/
 
 -- Here
+def odd_perfects : Set Nat := odds ∩ perfect_squares
 
 /-!
 ## Problem #4:
@@ -46,4 +49,19 @@ Formally state and prove the proposition that 9 ∈ odd_perfects.
 Hint: A proof within a proof.
 -/
 
--- Here
+#reduce 9 ∈ odd_perfects  -- membership proposition
+-- I need a proof that 9 is odd and a proof that 9 is a perfect square
+
+-- Proof that 9 is odd
+
+-- I cannot use Or.inl/Or.inr in the proof of 9 ∈ odds because the set is not constructed that way
+-- I could supply a proof that (9 % 2 = 0 → False)
+def nine_is_not_even : ¬ (9 % 2 = 0) := λ h => nomatch h
+
+-- Proof that 9 is a perfect square
+
+-- I need to prove that there exists a natural number m such that 9 = m * m
+-- I can use the fact that 3 * 3 = 9
+def nine_is_perfect_square : ∃ m, 9 = m * m := ⟨ 3, rfl ⟩
+
+example : 9 ∈ odd_perfects := ⟨ nine_is_not_even, nine_is_perfect_square ⟩ -- membership proof

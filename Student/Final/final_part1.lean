@@ -117,10 +117,15 @@ formal proof of it, and briefly explain in English how you
 proved it.
 -/
 
-example : ∃ n, square n 4 := Exists.intro 2 (_) -- fill in _
+example : ∃ n, square n 4 := Exists.intro 2 (sqr 2 4 rfl) -- fill in _
 
 /-
 English language translation of propostion here:
+There exists a natural number 'n' such that 'square n 4' is true.
+
+Exists.intro is used to provide a specific instance that satisfies
+the existential quantifier. Here, 2 is the instance of n. The blank
+(_) needs a proof that 2^2 = 4.
 -/
 
 /-!
@@ -243,6 +248,7 @@ example : 2 = 1 + 1 := rfl      -- Lean reduces 1 + 1 to 2, rfl works
 example : "Hi" = "Hi" := Eq.refl "Hi"
 example : true = or true false := Eq.refl true
 
+example : 2 = 1 + 1 := Eq.refl 2 -- Hey, this works too :)
 
 -- Three proofs of the same inequality: "proof by negation"
 example : 1 ≠ 2 := λ h => nomatch h
@@ -451,9 +457,9 @@ write separate tactic applications indented on separate lines.
 -/
 
 theorem eq_rel_trans {α : Type} {a b c : α} :
-_               -- fill with proposition: equality is transitive
-| _, _ => by
-  _             -- fill in your proof of it here
+a = b → b = c → a = c :=              -- fill with proposition: equality is transitive
+λ h1 h2 => by
+  rw [h1, h2]            -- fill in your proof of it here
 
 /-!
 ## Exam Question #3
@@ -468,3 +474,10 @@ is not.
 -/
 
 -- Your answer here
+inductive succ_rel : Nat → Nat → Prop
+| succ_pair (a : Nat) : succ_rel a (Nat.succ a)
+
+open succ_rel
+def succ_23 : succ_rel 2 3 := succ_pair 2 -- prove 2 3 is in the relation
+
+example : ¬ succ_rel 2 4 := λ h => nomatch h -- prove 2 4 is not in the relation
